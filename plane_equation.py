@@ -26,44 +26,20 @@ def get_interection_point(plane_eq_1, plane_eq_2):
 class PlaneEquation:
 
     def __init__(self):
-        self._coef_x = None
-        self._coef_y = None
-        self._coef_z = None
-        self._d = None
-
-    def get_coef_x(self):
-        return self._coef_x
-
-    def get_coef_y(self):
-        return self._coef_y
-
-    def get_coef_z(self):
-        return self._coef_z
-
-    def get_d(self):
-        return self._d
-
-    def set_coef_x(self, coef_x):
-        self._coef_x = coef_x
-
-    def set_coef_y(self, coef_y):
-        self._coef_y = coef_y
-
-    def set_coef_z(self, coef_z):
-        self._coef_z = coef_z
-
-    def set_d(self, d):
-        self._d = d
+        self.coef_x = None
+        self.coef_y = None
+        self.coef_z = None
+        self.d = None
 
     def __str__(self):
         result = ''
-        result = result + str(self._coef_x) + 'x'
-        result += ' + ' if (self._coef_y >= 0) else ' - '
-        result += str(abs(self._coef_y)) + 'y'
-        result += ' + ' if (self._coef_z >= 0) else ' - '
-        result += str(abs(self._coef_z)) + 'z'
-        result += ' + ' if (self._d >= 0) else ' - '
-        result += str(abs(self._d))
+        result = result + str(self.coef_x) + 'x'
+        result += ' + ' if (self.coef_y >= 0) else ' - '
+        result += str(abs(self.coef_y)) + 'y'
+        result += ' + ' if (self.coef_z >= 0) else ' - '
+        result += str(abs(self.coef_z)) + 'z'
+        result += ' + ' if (self.d >= 0) else ' - '
+        result += str(abs(self.d))
         result += ' = 0'
 
         return copy.deepcopy(result)

@@ -16,14 +16,14 @@ def _get_avg_structure(structures):
     sum_trend = 0
 
     for structure in structures:
-        plane = structure.get_plane()
-        linear = structure.get_linear()
+        plane = structure.plane
+        linear = structure.linear
 
-        sum_strike += plane.get_strike()
-        sum_dip += plane.get_dip()
+        sum_strike += plane.strike
+        sum_dip += plane.dip
 
-        sum_plunge += linear.get_plunge()
-        sum_trend += linear.get_trend()
+        sum_plunge += linear.plunge
+        sum_trend += linear.trend
 
     avg_strike = sum_strike / len(structures)
     avg_dip = sum_dip / len(structures)
@@ -39,14 +39,8 @@ def _get_avg_structure(structures):
 class Structure:
 
     def __init__(self, plane, linear):
-        self._plane = plane
-        self._linear = linear
-
-    def get_plane(self):
-        return copy.deepcopy(self._plane)
-
-    def get_linear(self):
-        return copy.deepcopy(self._linear)
+        self.plane = plane
+        self.linear = linear
 
 
 class Plane:
@@ -54,17 +48,19 @@ class Plane:
     def __init__(self):
         self._structure = []
         self._avg_structure = Structure(None, None)
-        self._weakness = Coordinate(None,None,None)
+        self._weakness = Coordinate(None, None, None)
+        self.tersingkap = None
 
-    def add_structure_from_excel(self, loc):
+    def add_structure_from_excel(self, loc, sheet):
         read_excel = ReadExcel(loc)
 
-        read_excel.set_sheet(0)
+        read_excel.set_sheet(sheet)
 
-        num_orientations = int(read_excel.cell_value(0, 1))
+        num_orientations = int(read_excel.cell_value(2, 1))
 
+        start_row = 4
         for idx in range(num_orientations):
-            row = 3 + idx
+            row = start_row + idx
 
             strike_col = 0
             dip_col = 1
@@ -77,6 +73,18 @@ class Plane:
             self._structure.append(Structure(plane_structure, linear_structure))
 
         self._avg_structure = copy.deepcopy(_get_avg_structure(self._structure))
+
+    def add_tersingkap_from_excel(self, loc, sheet):
+
+        read_excel = ReadExcel(loc)
+
+        read_excel.set_sheet(sheet)
+
+        x = read_excel.cell_value(2,4)
+        y = read_excel.cell_value(3,4)
+        z = read_excel.cell_value(4,4)
+
+        self.tersingkap = Coordinate(x, y, z)
 
     def get_avg_structure(self):
         return copy.deepcopy(self._avg_structure)
@@ -98,4 +106,3 @@ class Plane:
 
     def get_weakness(self):
         return copy.deepcopy(self._weakness)
-

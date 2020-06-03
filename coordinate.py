@@ -12,30 +12,34 @@ def find_s(first, second):
     )
 
 
+def get_intersection(vector_1, vector_2, vector_3):
+    k = (vector_3.c - vector_3.a / vector_1.a * vector_1.c) / (vector_2.c - vector_2.a / vector_1.a * vector_1.c)
+    y = (
+                    vector_3.a / vector_1.a * vector_1.d - vector_3.d - k * vector_2.a / vector_1.a * vector_1.d + k * vector_2.d) / (
+                    k * vector_2.a / vector_1.a * vector_1.b - k * vector_2.b + vector_3.b - vector_3.a / vector_1.a * vector_1.b)
+    z = (
+                    vector_2.a / vector_1.a * vector_1.b * y + vector_2.a / vector_1.a * vector_1.d - vector_2.b * y - vector_2.d) / (
+                    vector_2.c - vector_2.a / vector_1.a * vector_1.c)
+    x = -(vector_1.b * y + vector_1.c * z + vector_1.d) / vector_1.a
+
+    return copy.deepcopy(Coordinate(x, y, z))
+
+
 class Coordinate:
 
     def __init__(self, x, y, z):
-        self._x = x
-        self._y = y
-        self._z = z
-
-    def get_x(self):
-        return self._x
-
-    def get_y(self):
-        return self._y
-
-    def get_z(self):
-        return self._z
+        self.x = x
+        self.y = y
+        self.z = z
 
     def get_plane_equation(self) -> PlaneEquation:
         plane_equation = PlaneEquation()
 
-        plane_equation.set_coef_x(self._x)
-        plane_equation.set_coef_y(self._y)
-        plane_equation.set_coef_z(self._z)
+        plane_equation.set_coef_x(self.x)
+        plane_equation.set_coef_y(self.y)
+        plane_equation.set_coef_z(self.z)
 
         return copy.deepcopy(plane_equation)
 
     def __str__(self) -> str:
-        return '(' + str(self._x) + ', ' + str(self._y) + ', ' + str(self._z) + ')'
+        return '(' + str(self.x) + ', ' + str(self.y) + ', ' + str(self.z) + ')'
